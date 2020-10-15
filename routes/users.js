@@ -75,14 +75,20 @@ router.post('/register', (req, res) => {
 
 });
 router.post('/login', async (req, res, next) => {
-    const user = await Users.find({ email: req.body.email });
-
-
-    passport.authenticate('local', {
-        successRedirect: '/main/',
-        failureRedirect: '/users/login',
-        failureFlash: true
-    })(req, res, next);
+    const user = await Users.findOne({ email: req.body.email });
+    // console.log(user);
+    if (user.admin && user.admin == true)
+        passport.authenticate('local', {
+            successRedirect: '/main/',
+            failureRedirect: '/users/login',
+            failureFlash: true
+        })(req, res, next);
+    else
+        passport.authenticate('local', {
+            successRedirect: '/student/',
+            failureRedirect: '/users/login',
+            failureFlash: true
+        })(req, res, next);
 
 });
 

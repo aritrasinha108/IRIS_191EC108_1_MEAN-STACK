@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const upload = require('../utils/fileStore');
-// const Posts = require('../models/Post').Posts;
+const Requests = require('../models/request');
 const Books = require('../models/books');
 const deleteFile = require('../utils/deleteFile');
 
@@ -59,6 +59,10 @@ router.post('/edit/:id', upload.array('file'), async (req, res) => {
     res.redirect(`/main/edit/${book.id}`);
 
 });
+router.get('/view/:id', async (req, res) => {
+    const book = await Books.findById(req.params.id);
+    res.render("main/view", { user: req.user, book: book });
+})
 router.get('/delete/:id', async (req, res) => {
     const book = await Books.findByIdAndDelete(req.params.id);
     const files = book.images;
@@ -67,7 +71,51 @@ router.get('/delete/:id', async (req, res) => {
     })
     console.log(book);
     res.redirect('/main/');
-})
+});
+router.get('/requests', async (req, res) => {
+    const requests = await Requests.find({}).sort({ createdAt: 'asc' });
+    res.render('main/requests', { user: req.user, reqs: requests });
+
+
+});
+router.get('/app/:id', async (req, res) => {
+    const request = await Requests.findById(req.params.id);
+    const book = await Books.findById(request.bookId);
+    if (book.qty >= 1) {
+        book.qty = book.qty - 1;
+        request.status = "Approved";
+        await book.save();
+        await request.save();
+        res.json({
+            status: "success"
+        });
+        return
+
+    }
+    else {
+        req.flash('error_msg', "Book not available");
+        res.json({
+            status: "error",
+            messahe: "Book not available"
+        });
+    }
+
+
+
+});
+router.get('/dec/:id', async (req, res) => {
+    const request = await Requests.findById(req.params.id);
+
+    request.status = "Declined";
+
+    await request.save();
+    res.json({
+        status: "success"
+    });
+    return
+
+
+});
 
 router.post('/search', async (req, res) => {
     const tags = req.body.tags.split(' ');

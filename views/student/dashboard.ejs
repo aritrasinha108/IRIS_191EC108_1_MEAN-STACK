@@ -1,6 +1,6 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light w-100" style="box-shadow: 20px 20px 10px black;">
-    <a class="navbar-brand" href="/main"><img width="80" height="80" src="/img/logo.jpg" alt=""></a>
+    <a class="navbar-brand" href="/student"><img width="80" height="80" src="/img/logo.jpg" alt=""></a>
 
 
 
@@ -13,9 +13,9 @@
 
             
 
-            <a class="nav-item nav-link active" href="/main">Home <span class="sr-only">(current)</span></a>
-            <a class="nav-item nav-link" href="/main/new">Upload</a>
-            <a class="nav-item nav-link" href="/main/requests">Requests</a>
+            <a class="nav-item nav-link active" href="/student">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-item nav-link" href="/student/#">Upload</a>
+            <a class="nav-item nav-link" href="/student/#">Requests</a>
             <a class="nav-item nav-link" href="/users/logout">Logout</a>
 
 
@@ -26,6 +26,8 @@
 
 
 <h1 class="mt-4 text-center font-weight-bold">Dashboard</h1>
+<%- include("_messages") %>
+
 <form action="/main/search" method="POST" class="form-inline">
 
     <div class="form-group mr-10 ml-10">
@@ -48,12 +50,11 @@
        
 
         <div class="d-flex flex-row justify-content-around">
-            <a href="/main/edit/<%= book.id %>" ><i class="fas fa-edit"></i></a>
-            <a href="/main/view/<%= book.id %>" ><i class="fas fa-file"></i></a>
-            <a href="/main/delete/<%= book.id %>" ><i class="fas fa-trash-alt"></i></a>
+            <a href="/student/view/<%= book.id %>"><i class="fas fa-file"></i></a>
+           <a href="/student/issue/<%= book.id %>"> <i class="far fa-id-card">Request to issue</i></a>
         </div>
     </div>
-</div>
+    
 
 
 <% }) %>
