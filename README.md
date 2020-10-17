@@ -1,5 +1,6 @@
 # IRIS_191EC108_MEAN-STACK
-The recruitment task for IRIS Web Development team.
+
+The recruitment task for IRIS Web Development team. The framework used is Node.js and the database is mongodb. This is a library management system with authentication using passport.js. The admins can upload any book they want to the website with a few preview images (they are also stored in the database using gridfs and multer). The students can issue the books after the admin's approval and return them back to the library. The students are not allowed to go to the admin's page and vice versa. All the implemented features are mentioned below. 
 <br>
 # **Installation and setup**
 ### 1. Clone the repo to your local device and open the folder on the terminal
@@ -63,11 +64,12 @@ The recruitment task for IRIS Web Development team.
 
 # Impementated Features
 ### 1. Authentication using passport.js for admin and a student with passwords stored after being hashed
-### 2. CRUD operations can be performed on books by an admin
+### 2. CRUD operations can be performed on books by an admin with the images stored in the database using gridfs and multer
 ### 3. Issue requests can be created by a student for any book available and the same can be approved or declined by an admin.
 ### 4. The issued books can be returned by the student.
-### 5. Page to show all the transanctions made by a student.
+### 5. Page to show all the transanctions made by a student or and admin along with the issue dates and return dates (if any).
 ### 6. Page to show all the books borrowed by a student.
+### 7. Restriction of students to go to admin's page and vice-versa.
 
 
 
