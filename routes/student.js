@@ -18,7 +18,7 @@ router.get('/issue/:id', async (req, res) => {
     if (book.qty >= 1) {
 
         let prevreq = await Requests.find({ email: req.user.email });
-        if (prevreq.findIndex(r => r.bookId == req.params.id) == -1) {
+        if (prevreq.findIndex(r => (r.bookId == req.params.id) && (r.status == 'Pending' || r.status == "Approved")) == -1) {
             let newReq = new Requests({
                 name: req.user.name,
                 email: req.user.email,
