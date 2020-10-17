@@ -42,13 +42,17 @@ The recruitment task for IRIS Web Development team. The framework used is Node.j
 #### In the requests page, you get all issue requests that have been made by the students to borrow a book arranged according to the date (Latest request will be listed first). Here you can approve or decline a request made by a student. Once you approve the book will be lent to the student and the quantity will decrease by 1. Id declined, the book will not be issued to the student.
 <img src="https://github.com/aritrasinha108/IRIS_191EC108_MEAN-STACK/blob/master/screenshots/admin/requests.png" width="800" height="500">
 
+### Transanctions Page
+#### This page shows all the requests made by admin and their status sorted according to the date (latest first)
+<img src="https://github.com/aritrasinha108/IRIS_191EC108_MEAN-STACK/blob/master/screenshots/admin/transanctions.png" width="800" height="500">
+
 ## 3. Student Page
 ### Dashboard
 #### The dashboard page contains all the books that have been uploaded till now and are availabe (quantity >0). Like the admin page, this page also has search functionality available. A student can create an issue request for or view any book.
 <img src="https://github.com/aritrasinha108/IRIS_191EC108_MEAN-STACK/blob/master/screenshots/student/dashboard.png" width="800" height="500">
 
 ### Transanctions Page
-#### This page shows all the requests made by students and their stattus sorted according to the date (latest first)
+#### This page shows all the requests made by the student and their status sorted according to the date (latest first)
 <img src="https://github.com/aritrasinha108/IRIS_191EC108_MEAN-STACK/blob/master/screenshots/student/transanctions.png" width="800" height="500">
 
 ### My Books
