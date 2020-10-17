@@ -1,23 +1,28 @@
 const express = require('express');
-
 const router = express.Router();
 const Books = require('../models/books');
-
 const Requests = require('../models/request');
+
+// Landing page for students where list of available books are shown
 router.get('/', async (req, res) => {
     let books = await Books.find({});
-    books = books.filter(book => book.qty >= 1);
+
+    books = books.filter(book => book.qty >= 1); //Checking for availibility 
     res.render('student/dashboard', { user: req.user, books: books });
 });
+// To view books according to the id
 router.get('/view/:id', async (req, res) => {
     const book = await Books.findById(req.params.id);
     res.render("student/view", { user: req.user, book: book });
 });
+
+// To create an issue request for the book of a specified id
 router.get('/issue/:id', async (req, res) => {
     const book = await Books.findById(req.params.id);
-    if (book.qty >= 1) {
+    if (book.qty >= 1) {    //Checking for availibility 
 
         let prevreq = await Requests.find({ email: req.user.email });
+        //Check if a request has already been made 
         if (prevreq.findIndex(r => (r.bookId == req.params.id) && (r.status == 'Pending' || r.status == "Approved")) == -1) {
             let newReq = new Requests({
                 name: req.user.name,
@@ -41,19 +46,19 @@ router.get('/issue/:id', async (req, res) => {
 });
 
 router.get('/mybooks', async (req, res) => {
-
+    //Finding all the requests created by a user
     let reqs = await Requests.find({ email: req.user.email });
     let index = 0;
-    reqs.forEach(r => {
-        if (r.status != "Approved") {
-            reqs.splice(index, 1);
-            index--;
-        }
-        index++;
+    // reqs.forEach(r => {
+    //     if (r.status != "Approved") {
+    //         reqs.splice(index, 1);
+    //         index--;
+    //     }
+    //     index++;
 
-    });
+    // });
     let bookids = [];
-
+    //Filtering for status
     reqs = reqs.filter(r => r.status == "Approved");
     reqs.forEach(r => {
         bookids.push(r.bookId);
@@ -62,12 +67,13 @@ router.get('/mybooks', async (req, res) => {
     console.log(bookids);
     books = await Books.find({});
 
-
+    //Finding all books with the ids in the array bookids
     books = books.filter(b => bookids.findIndex(id => id == b.id) != -1)
     console.log(books);
     res.render('student/mybooks', { user: req.user, mybooks: books });
 
 });
+// To search for books using tags
 router.post('/search', async (req, res) => {
     const tags = req.body.tags.split(' ');
     console.log(tags);
@@ -92,6 +98,8 @@ router.post('/search', async (req, res) => {
 
 
 });
+
+// To return a book of speified id by a user
 router.get('/return/:id', async (req, res) => {
     let book = await Books.findById(req.params.id);
 
@@ -118,6 +126,7 @@ router.get('/return/:id', async (req, res) => {
         res.redirect('/student/mybooks');
     }
 });
+// tO get all the transanctions made by a user
 router.get('/trans', async (req, res) => {
     let reqs = await Requests.find({ email: req.user.email }).sort({ createdAt: 'desc' });
 

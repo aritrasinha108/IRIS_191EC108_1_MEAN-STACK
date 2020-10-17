@@ -26,6 +26,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
+// To add flash messages to the page
 app.use((req, res, next) => {
     res.locals.success_msg = req.flash("success_msg");
     res.locals.error_msg = req.flash("error_msg");
@@ -37,13 +38,10 @@ app.use((req, res, next) => {
 app.get('/', (req, res) => {
     res.render('auth/welcome');
 });
+// To ensure that the unauthenticated users can't get into the admin and student pages
 const ensureAuthenticated = require('./config/auth');
 
 
-
-app.get('/dashboard', ensureAuthenticated, (req, res) => {
-    res.render('main/dashboard', { name: req.user.name })
-});
 
 
 app.use('/main', ensureAuthenticated, require('./routes/main'));

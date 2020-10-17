@@ -28,13 +28,13 @@
 <h1 class="mt-4 text-center font-weight-bold">Dashboard</h1>
 <%- include("_messages") %>
 
-<form action="/student/search" method="POST" class="form-inline">
+<form action="/student/search" method="POST" class="form">
 
-    <div class="form-group mr-10 ml-10">
+<div class="form-group mx-20 ml-10 d-flex flex-row">
 
-        <input class="form-control form-control-lg" type="text" placeholder="Search here for fields.." name="tags">
-    </div>
-    <button type="submit" class="btn btn-success">Search</button>
+    <input class="form-control form-control-lg mx-40" type="text" placeholder="Search here for fields.." name="tags">
+    <button type="submit" class="btn btn-success mx-5">Search</button>
+</div>
 </form>
 <div class="container mt-20">
     

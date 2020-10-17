@@ -9,7 +9,7 @@ const conn = mongoose.createConnection(process.env.URI2, { useUnifiedTopology: t
 // Init gfs
 let gfs;
 
-
+// Storing the files in mongodb
 conn.once('open', () => {
 
     gfs = new mongoose.mongo.GridFSBucket(conn.db, {

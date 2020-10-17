@@ -6,7 +6,7 @@ const Books = require('../models/books');
 const deleteFile = require('../utils/deleteFile');
 
 
-
+// Landing page for the admin to get all books uploaded
 router.get('/', async (req, res) => {
     let books = await Books.find({});
     console.log(books);
@@ -14,13 +14,16 @@ router.get('/', async (req, res) => {
 
     res.render('main/dashboard', { user: req.user, books: books });
 });
+// Page to upload a new book
 router.get('/new', (req, res) => {
     res.render('main/new', { user: req.user });
 });
+// Page to edit details of a book
 router.get('/edit/:id', async (req, res) => {
     const book = await Books.findById(req.params.id);
     res.render('main/edit', { user: req.user, book: book });
 });
+// To add the new book
 router.post('/new', upload.array('file'), async (req, res) => {
     console.log(req.body);
     console.log(req.files);
@@ -42,6 +45,7 @@ router.post('/new', upload.array('file'), async (req, res) => {
     req.flash('success_msg', 'book uploaded successfully');
     res.redirect('/main/new');
 });
+// To update the changes in the book
 router.post('/edit/:id', upload.array('file'), async (req, res) => {
     let book = await Books.findById(req.params.id);
     book.title = req.body.title;
@@ -60,10 +64,12 @@ router.post('/edit/:id', upload.array('file'), async (req, res) => {
     res.redirect(`/main/edit/${book.id}`);
 
 });
+// To view any book details and images
 router.get('/view/:id', async (req, res) => {
     const book = await Books.findById(req.params.id);
     res.render("main/view", { user: req.user, book: book });
 })
+// To delete a book
 router.get('/delete/:id', async (req, res) => {
     const book = await Books.findByIdAndDelete(req.params.id);
     const files = book.images;
@@ -73,21 +79,24 @@ router.get('/delete/:id', async (req, res) => {
     console.log(book);
     res.redirect('/main/');
 });
+// Page to display all the requests made by the users
 router.get('/requests', async (req, res) => {
     const requests = await Requests.find({}).sort({ createdAt: 'desc' });
     res.render('main/requests', { user: req.user, reqs: requests });
 
 
 });
+// To approve a request
 router.get('/app/:id', async (req, res) => {
     const request = await Requests.findById(req.params.id);
     const book = await Books.findById(request.bookId);
+    // To check already responded
     if (request.status == 'Approved' || request.status == 'Declined') {
         req.flash('error_msg', "Request already addressed");
         res.redirect('/main');
         return;
     }
-
+    // To check if book is available
     if (book.qty >= 1) {
         book.qty = book.qty - 1;
         request.status = "Approved";
@@ -107,7 +116,7 @@ router.get('/app/:id', async (req, res) => {
 
 
 });
-
+// To decline a request
 router.get('/dec/:id', async (req, res) => {
     const request = await Requests.findById(req.params.id);
     if (request.status == 'Approved' || request.status == 'Declined') {
@@ -126,7 +135,7 @@ router.get('/dec/:id', async (req, res) => {
 
 
 });
-
+// To search for books using tags
 router.post('/search', async (req, res) => {
     const tags = req.body.tags.split(' ');
     console.log(tags);

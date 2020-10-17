@@ -1,6 +1,6 @@
-
+// To delete a file from the database 
 const mongoose = require('mongoose');
-// const { mongoURI1, mongoURI2 } = require('../config');
+
 const Grid = require('gridfs-stream');
 const router = require('../routes/docs');
 const conn = mongoose.createConnection(process.env.URI2, {

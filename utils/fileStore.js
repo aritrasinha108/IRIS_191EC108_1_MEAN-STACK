@@ -2,7 +2,7 @@ const crypto = require('crypto');
 const path = require('path');
 const multer = require('multer');
 const GridFsStorage = require('multer-gridfs-storage');
-
+// To store a file in the database
 
 var storage = new GridFsStorage({
   url: process.env.URI2,
