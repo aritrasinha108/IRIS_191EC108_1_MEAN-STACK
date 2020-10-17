@@ -100,6 +100,9 @@ router.get('/app/:id', async (req, res) => {
     if (book.qty >= 1) {
         book.qty = book.qty - 1;
         request.status = "Approved";
+
+        request.issueAt = new Date();
+        request.admin = req.user.email;
         await book.save();
         await request.save();
         req.flash('sucess_msg', "Request approved")
@@ -127,7 +130,8 @@ router.get('/dec/:id', async (req, res) => {
 
 
     request.status = "Declined";
-
+    request.issueAt = new Date();
+    request.admin = req.user.email;
     await request.save();
     req.flash('sucess_msg', "Request declines")
     res.redirect('/main/requests')
@@ -160,7 +164,12 @@ router.post('/search', async (req, res) => {
 
 });
 
+router.get('/trans', async (req, res) => {
+    let reqs = await Requests.find({ admin: req.user.email }).sort({ createdAt: 'desc' });
 
+
+    res.render('main/transanctions', { user: req.user, reqs: reqs });
+});
 
 
 

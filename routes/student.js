@@ -116,6 +116,7 @@ router.get('/return/:id', async (req, res) => {
     console.log(request);
     if (request) {
         request.status = "Returned";
+        request.returnAt = new Date();
         await request.save();
         await book.save();
         req.flash('succes_msg', "Book returned succesfully");

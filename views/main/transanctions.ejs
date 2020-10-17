@@ -11,12 +11,10 @@
         <div class="navbar-nav">
 
 
-
             <a class="nav-item nav-link" href="/main">Home <span class="sr-only">(current)</span></a>
             <a class="nav-item nav-link" href="/main/new">Upload</a>
-            <a class="nav-item nav-link active" href="/main/requests">Requests</a>
-            <a class="nav-item nav-link" href="/main/trans">Transanctions</a>  
-
+            <a class="nav-item nav-link" href="/main/requests">Requests</a>
+            <a class="nav-item nav-link active" href="/main/trans">Transanctions</a>
             <a class="nav-item nav-link" href="/users/logout">Logout</a>
 
 
@@ -26,7 +24,7 @@
 
 
 
-<h1 class="mt-4 text-center font-weight-bold">ISSUE REQUESTS</h1>
+<h1 class="mt-4 text-center font-weight-bold">My Transactions</h1>
 
 <%- include("_messages") %>
 
@@ -38,24 +36,22 @@
         <div class="card-body">
             <h5 class="card-title font-weight-bold">-by <%= r.name %></h5>
             <h5 class="card-title font-weight-bold">-for <%= r.book %></h5>
-            <h6 class="card-subtitle mb-2 text-muted">on <%= r.createdAt %></h6>
-            
+            <h6 class="card-subtitle mb-2 text-muted">Created on <%= r.createdAt.toLocaleDateString() %></h6>
+
+            <% if(r.issueAt) { %>
+            <h6 class="card-subtitle mb-2 text-muted">Issued on <%= r.issueAt.toLocaleDateString() %></h6>
+
+            <% } %>
+
+            <% if(r.returnAt) { %>
+            <h6 class="card-subtitle mb-2 text-muted">Returned on: <%= r.returnAt.toLocaleDateString() %></h6>
+
+            <% } %>
             <p id="status-<%= r.id %>" class="card-text text-center font-weight-bold font-italic"><%= r.status %></p>
 
-            <% if(r.status=='Pending'){ %>
-            <div class="d-flex flex-row justify-content-around" id="options-<%= r.id %>">
-                <form method="GET" action="/main/app/<%= r.id %>">
-                   <button type="submit"><i class="fas fa-check" id="app-req-<%= r.id %>" data-id="<%= r.id %>">Approve</i></button> 
-                </form>
-                <form method="GET" action="/main/dec/<%= r.id %>">
-                    <button type="submit"> 
 
-                        <i  class="fas fa-times" id="dec-req-<%= r.id %>" data-id="<%= r.id %>">Decline</i>
-                    </button>
 
-                </form>
-            </div>
-            <% } %>
+
         </div>
     </div>
 

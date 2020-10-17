@@ -23,7 +23,20 @@ const reqSchema = new mongoose.Schema({
     status: {
         type: String,
         default: 'Pending'
-    }
+    },
+    issueAt: {
+        type: Date,
+        required: false
+    },
+    admin: {
+        type: String,
+        required: false
+    },
+    returnAt: {
+        type: Date,
+        required: false
+    },
+
 
 
 });

@@ -36,8 +36,17 @@
         <div class="card-body">
             <h5 class="card-title font-weight-bold">-by <%= r.name %></h5>
             <h5 class="card-title font-weight-bold">-for <%= r.book %></h5>
-            <h6 class="card-subtitle mb-2 text-muted">on <%= r.createdAt %></h6>
+            <h6 class="card-subtitle mb-2 text-muted">Created on <%= r.createdAt.toLocaleDateString() %></h6>
             
+            <% if(r.issueAt) { %>
+            <h6 class="card-subtitle mb-2 text-muted">Issued on <%= r.issueAt.toLocaleDateString() %></h6>
+            
+            <% } %>
+
+            <% if(r.returnAt) { %>
+            <h6 class="card-subtitle mb-2 text-muted">Returned on: <%= r.returnAt.toLocaleDateString() %></h6>
+            
+            <% } %>
             <p id="status-<%= r.id %>" class="card-text text-center font-weight-bold font-italic"><%= r.status %></p>
 
             

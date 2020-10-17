@@ -1,4 +1,3 @@
-
 <nav class="navbar navbar-expand-lg navbar-light bg-light w-100" style="box-shadow: 20px 20px 10px black;">
     <a class="navbar-brand" href="/main"><img width="80" height="80" src="/img/logo.jpg" alt=""></a>
 
@@ -11,11 +10,13 @@
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
 
-            
+
 
             <a class="nav-item nav-link active" href="/main">Home <span class="sr-only">(current)</span></a>
             <a class="nav-item nav-link" href="/main/new">Upload</a>
             <a class="nav-item nav-link" href="/main/requests">Requests</a>
+            <a class="nav-item nav-link" href="/main/trans">Transanctions</a>
+
             <a class="nav-item nav-link" href="/users/logout">Logout</a>
 
 
@@ -32,7 +33,8 @@
 
     <div class="form-group mr-10 ml-10 d-flex flex-row">
 
-        <input class="form-control form-control-lg mr-20" type="text" placeholder="Search here for fields.." name="tags">
+        <input class="form-control form-control-lg mr-20" type="text" placeholder="Search here for fields.."
+            name="tags">
         <button type="submit" class="btn btn-success mx-5">Search</button>
     </div>
 </form>
@@ -40,28 +42,28 @@
 <%- include("_messages") %>
 
 <div class="container mt-20">
-    
-<% books.forEach((book)=>{ %>
-<div class="card my-5" style="box-shadow:10px 10px 5px black;" data-id="<%= book.id %>">
-    <div class="card-body">
-        <h5 class="card-title font-weight-bold"><%= book.title %></h5>
-        <h6 class="card-subtitle mb-2 text-muted"> <%= book.qty %> left<br>ISBN: <%= book.isbn %></h6>
-        <% book.tags.forEach(t=>{ %>
-        <span class="badge badge-success"><%= t %> </span>
-        <% }) %>
-        <p class="card-text text-center font-italic"><%= book.desc %></p>
-       
 
-        <div class="d-flex flex-row justify-content-around">
-            <a href="/main/edit/<%= book.id %>" ><i class="fas fa-edit"></i></a>
-            <a href="/main/view/<%= book.id %>" ><i class="fas fa-file"></i></a>
-            <a href="/main/delete/<%= book.id %>" ><i class="fas fa-trash-alt"></i></a>
+    <% books.forEach((book)=>{ %>
+    <div class="card my-5" style="box-shadow:10px 10px 5px black;" data-id="<%= book.id %>">
+        <div class="card-body">
+            <h5 class="card-title font-weight-bold"><%= book.title %></h5>
+            <h6 class="card-subtitle mb-2 text-muted"> <%= book.qty %> left<br>ISBN: <%= book.isbn %></h6>
+            <% book.tags.forEach(t=>{ %>
+            <span class="badge badge-success"><%= t %> </span>
+            <% }) %>
+            <p class="card-text text-center font-italic"><%= book.desc %></p>
+
+
+            <div class="d-flex flex-row justify-content-around">
+                <a href="/main/edit/<%= book.id %>"><i class="fas fa-edit"></i></a>
+                <a href="/main/view/<%= book.id %>"><i class="fas fa-file"></i></a>
+                <a href="/main/delete/<%= book.id %>"><i class="fas fa-trash-alt"></i></a>
+            </div>
         </div>
     </div>
-</div>
 
 
-<% }) %>
+    <% }) %>
 
 
 </div>
