@@ -16,15 +16,23 @@ router.get('/view/:id', async (req, res) => {
 router.get('/issue/:id', async (req, res) => {
     const book = await Books.findById(req.params.id);
     if (book.qty >= 1) {
-        let newReq = new Requests({
-            name: req.user.name,
-            email: req.user.email,
-            book: book.title,
-            bookId: book.id
-        });
-        await newReq.save();
-        req.flash('success_msg', "Issue request created! Please wait for the admin to respond");
-        res.redirect('/student');
+
+        let prevreq = await Requests.find({ email: req.user.email });
+        if (prevreq.findIndex(r => r.bookId == req.params.id) == -1) {
+            let newReq = new Requests({
+                name: req.user.name,
+                email: req.user.email,
+                book: book.title,
+                bookId: book.id
+            });
+            await newReq.save();
+            req.flash('success_msg', "Issue request created! Please wait for the admin to respond");
+            res.redirect('/student');
+        }
+        else {
+            req.flash('error_msg', "Book already requested for issue");
+            res.redirect('/student');
+        }
     }
     else {
         req.flash("error_msg", "Book not available!!");
@@ -35,21 +43,28 @@ router.get('/issue/:id', async (req, res) => {
 router.get('/mybooks', async (req, res) => {
 
     let reqs = await Requests.find({ email: req.user.email });
-    bookids = [];
+    let index = 0;
+    reqs.forEach(r => {
+        if (r.status != "Approved") {
+            reqs.splice(index, 1);
+            index--;
+        }
+        index++;
+
+    });
+    let bookids = [];
+
+    reqs = reqs.filter(r => r.status == "Approved");
     reqs.forEach(r => {
         bookids.push(r.bookId);
-    })
-    let books = await Books.find({});
-    let index = 0;
-    books.forEach(b => {
 
-        if (bookids.findIndex(id => id == b.id) == -1) {
-            books.splice(index, 1);
-        }
+    });
+    console.log(bookids);
+    books = await Books.find({});
 
 
-        index++;
-    })
+    books = books.filter(b => bookids.findIndex(id => id == b.id) != -1)
+    console.log(books);
     res.render('student/mybooks', { user: req.user, mybooks: books });
 
 });
@@ -81,13 +96,27 @@ router.get('/return/:id', async (req, res) => {
     let book = await Books.findById(req.params.id);
 
     book.qty = book.qty + 1;
-    let request = await Requests.findOne({ email: req.user.email, bookId: req.params.id, status: "Approved" });
+    let requests = await Requests.find({ bookId: req.params.id });
+    let request;
+    requests.forEach(r => {
+        if (r.status == 'Approved' && r.email == req.user.email) {
+            request = r;
+
+        }
+
+    })
     console.log(request);
-    request.status = "Returned";
-    await request.save();
-    await book.save();
-    req.flash('succes_msg', "Book returned succesfully");
-    res.redirect('/student/mybooks');
+    if (request) {
+        request.status = "Returned";
+        await request.save();
+        await book.save();
+        req.flash('succes_msg', "Book returned succesfully");
+        res.redirect('/student/mybooks');
+    }
+    else {
+        req.flash('succes_msg', "Book already returned");
+        res.redirect('/student/mybooks');
+    }
 });
 router.get('/trans', async (req, res) => {
     let reqs = await Requests.find({ email: req.user.email }).sort({ createdAt: 'desc' });
