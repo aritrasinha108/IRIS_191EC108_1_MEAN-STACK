@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light w-100" style="box-shadow: 20px 20px 10px black;">
-    <a class="navbar-brand" href="/main"><img width="80" height="80" src="/img/logo.jpg" alt=""></a>
+    <a class="navbar-brand" href="/student"><img width="80" height="80" src="/img/logo.jpg" alt=""></a>
 
 
 
@@ -12,9 +12,9 @@
 
 
 
-            <a class="nav-item nav-link active" href="/main">Home <span class="sr-only">(current)</span></a>
-            <a class="nav-item nav-link" href="/main/new">Upload</a>
-            <a class="nav-item nav-link" href="/main/requests">Requests</a>
+            <a class="nav-item nav-link active" href="/student">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-item nav-link" href="/student/trans">My Transanctions</a>
+            <a class="nav-item nav-link" href="/student/mybooks">Requests</a>
             <a class="nav-item nav-link" href="/users/logout">Logout</a>
 
 
@@ -24,7 +24,7 @@
 
 
 
-<h1 class="mt-4 text-center font-weight-bold">ISSUE REQUESTS</h1>
+<h1 class="mt-4 text-center font-weight-bold">My Transactions</h1>
 
 <%- include("_messages") %>
 
@@ -40,20 +40,9 @@
             
             <p id="status-<%= r.id %>" class="card-text text-center font-weight-bold font-italic"><%= r.status %></p>
 
-            <% if(r.status=='Pending'){ %>
-            <div class="d-flex flex-row justify-content-around" id="options-<%= r.id %>">
-                <form method="GET" action="/main/app/<%= r.id %>">
-                   <button type="submit"><i class="fas fa-check" id="app-req-<%= r.id %>" data-id="<%= r.id %>">Approve</i></button> 
-                </form>
-                <form method="GET" action="/main/dec/<%= r.id %>">
-                    <button type="submit"> 
-
-                        <i  class="fas fa-times" id="dec-req-<%= r.id %>" data-id="<%= r.id %>">Decline</i>
-                    </button>
-
-                </form>
-            </div>
-            <% } %>
+            
+            
+            
         </div>
     </div>
 

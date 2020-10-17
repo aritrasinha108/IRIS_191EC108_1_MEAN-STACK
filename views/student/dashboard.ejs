@@ -14,8 +14,8 @@
             
 
             <a class="nav-item nav-link active" href="/student">Home <span class="sr-only">(current)</span></a>
-            <a class="nav-item nav-link" href="/student/#">Upload</a>
-            <a class="nav-item nav-link" href="/student/#">Requests</a>
+            <a class="nav-item nav-link" href="/student/trans">My Transanctions</a>
+            <a class="nav-item nav-link" href="/student/mybooks">My Books</a>
             <a class="nav-item nav-link" href="/users/logout">Logout</a>
 
 
@@ -28,7 +28,7 @@
 <h1 class="mt-4 text-center font-weight-bold">Dashboard</h1>
 <%- include("_messages") %>
 
-<form action="/main/search" method="POST" class="form-inline">
+<form action="/student/search" method="POST" class="form-inline">
 
     <div class="form-group mr-10 ml-10">
 
@@ -55,7 +55,7 @@
         </div>
     </div>
     
-
+</div>
 
 <% }) %>
 

@@ -26,6 +26,8 @@
 
 
 <h1 class="mt-4 text-center font-weight-bold">Dashboard</h1>
+
+
 <form action="/main/search" method="POST" class="form-inline">
 
     <div class="form-group mr-10 ml-10">
@@ -34,6 +36,9 @@
     </div>
     <button type="submit" class="btn btn-success">Search</button>
 </form>
+
+<%- include("_messages") %>
+
 <div class="container mt-20">
     
 <% books.forEach((book)=>{ %>

@@ -10,6 +10,7 @@ const deleteFile = require('../utils/deleteFile');
 router.get('/', async (req, res) => {
     let books = await Books.find({});
     console.log(books);
+    // books = books.filter(book => book.qty >= 1);
 
     res.render('main/dashboard', { user: req.user, books: books });
 });
@@ -73,7 +74,7 @@ router.get('/delete/:id', async (req, res) => {
     res.redirect('/main/');
 });
 router.get('/requests', async (req, res) => {
-    const requests = await Requests.find({}).sort({ createdAt: 'asc' });
+    const requests = await Requests.find({}).sort({ createdAt: 'desc' });
     res.render('main/requests', { user: req.user, reqs: requests });
 
 
@@ -81,37 +82,46 @@ router.get('/requests', async (req, res) => {
 router.get('/app/:id', async (req, res) => {
     const request = await Requests.findById(req.params.id);
     const book = await Books.findById(request.bookId);
+    if (request.status == 'Approved' || request.status == 'Declined') {
+        req.flash('error_msg', "Request already addressed");
+        res.redirect('/main');
+        return;
+    }
+
     if (book.qty >= 1) {
         book.qty = book.qty - 1;
         request.status = "Approved";
         await book.save();
         await request.save();
-        res.json({
-            status: "success"
-        });
+        req.flash('sucess_msg', "Request approved")
+        res.redirect('/main/requests')
         return
 
     }
     else {
         req.flash('error_msg', "Book not available");
-        res.json({
-            status: "error",
-            messahe: "Book not available"
-        });
+        res.redirect('/main/requests')
+
     }
 
 
 
 });
+
 router.get('/dec/:id', async (req, res) => {
     const request = await Requests.findById(req.params.id);
+    if (request.status == 'Approved' || request.status == 'Declined') {
+        req.flash('error_msg', "Request already addressed");
+        res.redirect('/main');
+        return;
+    }
+
 
     request.status = "Declined";
 
     await request.save();
-    res.json({
-        status: "success"
-    });
+    req.flash('sucess_msg', "Request declines")
+    res.redirect('/main/requests')
     return
 
 
@@ -122,6 +132,7 @@ router.post('/search', async (req, res) => {
     console.log(tags);
     reqBooks = [];
     const books = await Books.find({});
+
     tags.forEach(t => {
         t = t.toUpperCase();
         books.forEach(p => {
