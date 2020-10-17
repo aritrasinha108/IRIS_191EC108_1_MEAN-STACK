@@ -3,21 +3,31 @@ const router = express.Router();
 const Books = require('../models/books');
 const Requests = require('../models/request');
 
+function isAdmin(req, res, next) {
+    if (req.user.admin == false) {
+        next();
+    }
+    else {
+        req.flash('error_msg', "Please login as student to continue");
+        res.redirect('/main/');
+    }
+}
+
 // Landing page for students where list of available books are shown
-router.get('/', async (req, res) => {
+router.get('/', isAdmin, async (req, res) => {
     let books = await Books.find({});
 
     books = books.filter(book => book.qty >= 1); //Checking for availibility 
     res.render('student/dashboard', { user: req.user, books: books });
 });
 // To view books according to the id
-router.get('/view/:id', async (req, res) => {
+router.get('/view/:id', isAdmin, async (req, res) => {
     const book = await Books.findById(req.params.id);
     res.render("student/view", { user: req.user, book: book });
 });
 
 // To create an issue request for the book of a specified id
-router.get('/issue/:id', async (req, res) => {
+router.get('/issue/:id', isAdmin, async (req, res) => {
     const book = await Books.findById(req.params.id);
     if (book.qty >= 1) {    //Checking for availibility 
 
@@ -45,7 +55,7 @@ router.get('/issue/:id', async (req, res) => {
     }
 });
 
-router.get('/mybooks', async (req, res) => {
+router.get('/mybooks', isAdmin, async (req, res) => {
     //Finding all the requests created by a user
     let reqs = await Requests.find({ email: req.user.email });
     let index = 0;
@@ -74,7 +84,7 @@ router.get('/mybooks', async (req, res) => {
 
 });
 // To search for books using tags
-router.post('/search', async (req, res) => {
+router.post('/search', isAdmin, async (req, res) => {
     const tags = req.body.tags.split(' ');
     console.log(tags);
     reqBooks = [];
@@ -100,7 +110,7 @@ router.post('/search', async (req, res) => {
 });
 
 // To return a book of speified id by a user
-router.get('/return/:id', async (req, res) => {
+router.get('/return/:id', isAdmin, async (req, res) => {
     let book = await Books.findById(req.params.id);
 
     book.qty = book.qty + 1;
@@ -128,7 +138,7 @@ router.get('/return/:id', async (req, res) => {
     }
 });
 // tO get all the transanctions made by a user
-router.get('/trans', async (req, res) => {
+router.get('/trans', isAdmin, async (req, res) => {
     let reqs = await Requests.find({ email: req.user.email }).sort({ createdAt: 'desc' });
 
 

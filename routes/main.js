@@ -5,9 +5,18 @@ const Requests = require('../models/request');
 const Books = require('../models/books');
 const deleteFile = require('../utils/deleteFile');
 
-
+// If a student tries to enter through the url 
+function isAdmin(req, res, next) {
+    if (req.user.admin == true) {
+        next();
+    }
+    else {
+        req.flash('error_msg', "Please login as admin to continue");
+        res.redirect('/student/');
+    }
+}
 // Landing page for the admin to get all books uploaded
-router.get('/', async (req, res) => {
+router.get('/', isAdmin, async (req, res) => {
     let books = await Books.find({});
     console.log(books);
     // books = books.filter(book => book.qty >= 1);
@@ -15,16 +24,16 @@ router.get('/', async (req, res) => {
     res.render('main/dashboard', { user: req.user, books: books });
 });
 // Page to upload a new book
-router.get('/new', (req, res) => {
+router.get('/new', isAdmin, (req, res) => {
     res.render('main/new', { user: req.user });
 });
 // Page to edit details of a book
-router.get('/edit/:id', async (req, res) => {
+router.get('/edit/:id', isAdmin, async (req, res) => {
     const book = await Books.findById(req.params.id);
     res.render('main/edit', { user: req.user, book: book });
 });
 // To add the new book
-router.post('/new', upload.array('file'), async (req, res) => {
+router.post('/new', isAdmin, upload.array('file'), async (req, res) => {
     console.log(req.body);
     console.log(req.files);
     console.log(req.file);
@@ -46,7 +55,7 @@ router.post('/new', upload.array('file'), async (req, res) => {
     res.redirect('/main/new');
 });
 // To update the changes in the book
-router.post('/edit/:id', upload.array('file'), async (req, res) => {
+router.post('/edit/:id', isAdmin, upload.array('file'), async (req, res) => {
     let book = await Books.findById(req.params.id);
     book.title = req.body.title;
     book.desc = req.body.desc;
@@ -65,12 +74,12 @@ router.post('/edit/:id', upload.array('file'), async (req, res) => {
 
 });
 // To view any book details and images
-router.get('/view/:id', async (req, res) => {
+router.get('/view/:id', isAdmin, async (req, res) => {
     const book = await Books.findById(req.params.id);
     res.render("main/view", { user: req.user, book: book });
 })
 // To delete a book
-router.get('/delete/:id', async (req, res) => {
+router.get('/delete/:id', isAdmin, async (req, res) => {
     const book = await Books.findByIdAndDelete(req.params.id);
     const files = book.images;
     files.forEach(async (id) => {
@@ -80,14 +89,14 @@ router.get('/delete/:id', async (req, res) => {
     res.redirect('/main/');
 });
 // Page to display all the requests made by the users
-router.get('/requests', async (req, res) => {
+router.get('/requests', isAdmin, async (req, res) => {
     const requests = await Requests.find({}).sort({ createdAt: 'desc' });
     res.render('main/requests', { user: req.user, reqs: requests });
 
 
 });
 // To approve a request
-router.get('/app/:id', async (req, res) => {
+router.get('/app/:id', isAdmin, async (req, res) => {
     const request = await Requests.findById(req.params.id);
     const book = await Books.findById(request.bookId);
     // To check already responded
@@ -120,7 +129,7 @@ router.get('/app/:id', async (req, res) => {
 
 });
 // To decline a request
-router.get('/dec/:id', async (req, res) => {
+router.get('/dec/:id', isAdmin, async (req, res) => {
     const request = await Requests.findById(req.params.id);
     if (request.status == 'Approved' || request.status == 'Declined') {
         req.flash('error_msg', "Request already addressed");
@@ -140,7 +149,7 @@ router.get('/dec/:id', async (req, res) => {
 
 });
 // To search for books using tags
-router.post('/search', async (req, res) => {
+router.post('/search', isAdmin, async (req, res) => {
     const tags = req.body.tags.split(' ');
     console.log(tags);
     reqBooks = [];
@@ -164,7 +173,7 @@ router.post('/search', async (req, res) => {
 
 });
 
-router.get('/trans', async (req, res) => {
+router.get('/trans', isAdmin, async (req, res) => {
     let reqs = await Requests.find({ admin: req.user.email }).sort({ createdAt: 'desc' });
 
 
