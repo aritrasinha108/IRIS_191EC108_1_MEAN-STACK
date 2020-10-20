@@ -94,7 +94,8 @@ router.get('/delete/:id', isAdmin, async (req, res) => {
 });
 // Page to display all the requests made by the users
 router.get('/requests', isAdmin, async (req, res) => {
-    const requests = await Requests.find({}).sort({ createdAt: 'desc' });
+    let requests = await Requests.find({}).sort({ createdAt: 'desc' });
+    requests= requests.filter(r=>r.status=="Pending");
     res.render('main/requests', { user: req.user, reqs: requests });
 
 
@@ -179,7 +180,7 @@ router.post('/search', isAdmin, async (req, res) => {
 
 router.get('/trans', isAdmin, async (req, res) => {
     let reqs = await Requests.find({ admin: req.user.email }).sort({ createdAt: 'desc' });
-
+    
 
     res.render('main/transanctions', { user: req.user, reqs: reqs });
 });
