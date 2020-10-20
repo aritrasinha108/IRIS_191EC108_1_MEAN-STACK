@@ -38,6 +38,10 @@ router.post('/new', isAdmin, upload.array('file'), async (req, res) => {
     console.log(req.files);
     console.log(req.file);
     const tags = req.body.tags.split(' ');
+    tags.forEach(t=>{
+        t=t.toUpperCase();
+    });
+    console.log(tags);
     let newBook = new Books({
         title: req.body.title,
         qty: req.body.qty,
@@ -158,7 +162,7 @@ router.post('/search', isAdmin, async (req, res) => {
     tags.forEach(t => {
         t = t.toUpperCase();
         books.forEach(p => {
-            if (reqBooks.findIndex(r => r == p) == -1 && p.tags.findIndex(tag => tag == t) != -1)
+            if (reqBooks.findIndex(r => r == p) == -1 && p.tags.findIndex(tag => tag.toUpperCase() == t) != -1)
                 reqBooks.push(p);
         })
 

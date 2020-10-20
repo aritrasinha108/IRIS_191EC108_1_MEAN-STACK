@@ -33,6 +33,8 @@
     "url": "https://github.com/aritrasinha108/IRIS_191EC108_MEAN-STACK.git/issues"
   },
   "homepage": "https://github.com/aritrasinha108/IRIS_191EC108_MEAN-STACK.git#readme",
-  "devDependencies": {},
-  "description": ""
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  },
+  "description": "The recruitment task for IRIS Web Development team. The framework used is Node.js and the database is mongodb. This is a library management system with authentication using passport.js. The admins can upload any book they want to the website with a few preview images (they are also stored in the database using gridfs and multer). The students can issue the books after the admin's approval and return them back to the library. The students are not allowed to go to the admin's page and vice versa. All the implemented features are mentioned below.  <br> # **Installation and setup** ### 1. Clone the repo to your local device and open the folder on the terminal ### 2. <code>npm init </code> ### 3. <code>npm i </code> to install all the npm packages ### 4. <code>npm i -D </code> to install the dev Dependencies ### 5. <code>npm run dev </code> to run the server and go to [localhost:3000](http://localhost:3000/) <br> <img src=\"https://github.com/aritrasinha108/IRIS_191EC108_MEAN-STACK/blob/master/screenshots/auth/welcome.png\" width=\"800\" height=\"500\">  # **Working** ## 1. Registration and Login #### There are two ways one can register, as an admin or as a student..To register as an admin, the user needs a key, which has been set as <code>123456789</code> here"
 }

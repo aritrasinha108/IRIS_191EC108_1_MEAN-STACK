@@ -94,7 +94,7 @@ router.post('/search', isAdmin, async (req, res) => {
     tags.forEach(t => {
         t = t.toUpperCase();
         books.forEach(p => {
-            if (reqBooks.findIndex(r => r == p) == -1 && p.tags.findIndex(tag => tag == t) != -1)
+            if (reqBooks.findIndex(r => r == p) == -1 && p.tags.findIndex(tag => tag.toUpperCase() == t) != -1)
                 reqBooks.push(p);
         })
 
