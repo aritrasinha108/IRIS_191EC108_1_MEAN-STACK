@@ -1,9 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const upload = require('../utils/fileStore');
 const Requests = require('../models/request');
 const Books = require('../models/books');
-const deleteFile = require('../utils/deleteFile');
 
 // If a student tries to enter through the url 
 function isAdmin(req, res, next) {
@@ -33,10 +31,9 @@ router.get('/edit/:id', isAdmin, async (req, res) => {
     res.render('main/edit', { user: req.user, book: book });
 });
 // To add the new book
-router.post('/new', isAdmin, upload.array('file'), async (req, res) => {
+router.post('/new', isAdmin, async (req, res) => {
     console.log(req.body);
-    console.log(req.files);
-    console.log(req.file);
+    console.log(req.body.tags);
     const tags = req.body.tags.split(' ');
     tags.forEach(t=>{
         t=t.toUpperCase();
@@ -50,16 +47,13 @@ router.post('/new', isAdmin, upload.array('file'), async (req, res) => {
         tags: tags,
 
     });
-    req.files.forEach(file => {
-        newBook.images.push(file.id);
-    });
     await newBook.save();
     console.log(newBook);
     req.flash('success_msg', 'book uploaded successfully');
     res.redirect('/main/new');
 });
 // To update the changes in the book
-router.post('/edit/:id', isAdmin, upload.array('file'), async (req, res) => {
+router.post('/edit/:id', isAdmin, async (req, res) => {
     let book = await Books.findById(req.params.id);
     book.title = req.body.title;
     book.desc = req.body.desc;
@@ -77,7 +71,7 @@ router.post('/edit/:id', isAdmin, upload.array('file'), async (req, res) => {
     res.redirect(`/main/edit/${book.id}`);
 
 });
-// To view any book details and images
+// To view any book details 
 router.get('/view/:id', isAdmin, async (req, res) => {
     const book = await Books.findById(req.params.id);
     res.render("main/view", { user: req.user, book: book });
@@ -85,10 +79,6 @@ router.get('/view/:id', isAdmin, async (req, res) => {
 // To delete a book
 router.get('/delete/:id', isAdmin, async (req, res) => {
     const book = await Books.findByIdAndDelete(req.params.id);
-    const files = book.images;
-    files.forEach(async (id) => {
-        await deleteFile(id);
-    })
     console.log(book);
     res.redirect('/main/');
 });

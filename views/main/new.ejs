@@ -21,7 +21,7 @@
     ADD A NEW BOOK
 </h1>
 <%- include("_messages") %>
-<form  class ="container"style="box-shadow:10px 10px 5px black;" action="/main/new" method="post" enctype="multipart/form-data">
+<form  class ="container"style="box-shadow:10px 10px 5px black;" action="/main/new" method="post">
 <div class="form-group mb-2">
     <label for="post-title" class="font-weight-bold">Title:</label>
     <input class="form-control" id="post-title" required type="text" placeholder="Enter the title of the post" name="title">
@@ -37,10 +37,6 @@
     <small id="tagAlert" class="form-text text-muted text-danger">
         <p class="text-danger">Seperate more than one tags with Space!!</p>
     </small>
-</div>
-<div class="form-group mb-2 d-flex flex-row justify-content-center">    
-    <label for="images" class="font-weight-bold">Attach the images here</label>
-    <input required name="file" type="file" class="form-control-file" id="images" multiple>
 </div>
 <div class="form-group mb-2 d-flex flex-row justify-content-center">    
     <label for="qty" class="font-weight-bold">Quantity</label>
