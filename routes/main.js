@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const Requests = require('../models/request');
 const Books = require('../models/books');
 
 // If a student tries to enter through the url 
@@ -82,67 +81,7 @@ router.get('/delete/:id', isAdmin, async (req, res) => {
     console.log(book);
     res.redirect('/main/');
 });
-// Page to display all the requests made by the users
-router.get('/requests', isAdmin, async (req, res) => {
-    let requests = await Requests.find({}).sort({ createdAt: 'desc' });
-    requests= requests.filter(r=>r.status=="Pending");
-    res.render('main/requests', { user: req.user, reqs: requests });
 
-
-});
-// To approve a request
-router.get('/app/:id', isAdmin, async (req, res) => {
-    const request = await Requests.findById(req.params.id);
-    const book = await Books.findById(request.bookId);
-    // To check already responded
-    if (request.status == 'Approved' || request.status == 'Declined') {
-        req.flash('error_msg', "Request already addressed");
-        res.redirect('/main');
-        return;
-    }
-    // To check if book is available
-    if (book.qty >= 1) {
-        book.qty = book.qty - 1;
-        request.status = "Approved";
-
-        request.issueAt = new Date();
-        request.admin = req.user.email;
-        await book.save();
-        await request.save();
-        req.flash('sucess_msg', "Request approved")
-        res.redirect('/main/requests')
-        return
-
-    }
-    else {
-        req.flash('error_msg', "Book not available");
-        res.redirect('/main/requests')
-
-    }
-
-
-
-});
-// To decline a request
-router.get('/dec/:id', isAdmin, async (req, res) => {
-    const request = await Requests.findById(req.params.id);
-    if (request.status == 'Approved' || request.status == 'Declined') {
-        req.flash('error_msg', "Request already addressed");
-        res.redirect('/main');
-        return;
-    }
-
-
-    request.status = "Declined";
-    request.issueAt = new Date();
-    request.admin = req.user.email;
-    await request.save();
-    req.flash('sucess_msg', "Request declines")
-    res.redirect('/main/requests')
-    return
-
-
-});
 // To search for books using tags
 router.post('/search', isAdmin, async (req, res) => {
     const tags = req.body.tags.split(' ');
@@ -167,14 +106,6 @@ router.post('/search', isAdmin, async (req, res) => {
 
 
 });
-
-router.get('/trans', isAdmin, async (req, res) => {
-    let reqs = await Requests.find({ admin: req.user.email }).sort({ createdAt: 'desc' });
-    
-
-    res.render('main/transanctions', { user: req.user, reqs: reqs });
-});
-
 
 
 module.exports = router;

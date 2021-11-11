@@ -7,8 +7,6 @@
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
             <a class="nav-item nav-link" href="/student">Home <span class="sr-only">(current)</span></a>
-            <a class="nav-item nav-link" href="/student/trans">My Transanctions</a>
-            <a class="nav-item nav-link" href=/students/mybooks">My Books</a>
             <a class="nav-item nav-link" href="/users/logout">logout</a>
 
         </div>
@@ -27,8 +25,5 @@
         <% }) %>
         <p class="card-text text-center font-italic"><%= book.desc %></p>
            <br>
-        <div class="d-flex flex-row justify-content-around">
-        <a href="/student/issue/<%= book.id %>"> <i class="far fa-id-card">Request to issue</i></a>
-        </div>
     </div>
 </div>

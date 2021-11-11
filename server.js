@@ -46,4 +46,4 @@ const ensureAuthenticated = require('./config/auth');
 app.use('/main', ensureAuthenticated, require('./routes/main'));
 app.use('/student', ensureAuthenticated, require('./routes/student'));
 app.use('/users', require('./routes/users'));
-app.listen(PORT, () => console.log("The server started runnig on port 3000"));
+app.listen(PORT, () => console.log("The server started running on port 3000"));

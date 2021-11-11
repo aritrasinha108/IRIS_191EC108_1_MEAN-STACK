@@ -49,7 +49,7 @@ router.post('/register', (req, res) => {
         Users.findOne({ email: email })
             .then(user => {
                 if (user) {
-                    res.render("register", {
+                    res.render("auth/register", {
                         errors,
                         name,
                         email,
