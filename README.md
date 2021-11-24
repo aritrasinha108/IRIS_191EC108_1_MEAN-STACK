@@ -10,13 +10,16 @@ The recruitment task for IRIS Web Development team. The framework used is Node.j
 ### 5. <code>npm run dev </code> to run the server and go to [localhost:3000](http://localhost:3000/)
 <br>
 <img src="https://github.com/aritrasinha108/IRIS_191EC108_MEAN-STACK/blob/master/screenshots/auth/welcome.png" width="800" height="500"> 
+
 # **Working**
 ## 1. Registration and Login
 #### There are two ways one can register, as an admin or as a student..To register as an admin, the user needs a key, which has been set as <code>123456789</code> here
 
 <img src="https://github.com/aritrasinha108/IRIS_191EC108_MEAN-STACK/blob/master/screenshots/auth/register.png" width="800" height="500">
+
 #### To register as student, the user doesn't have to enter any key. In case the user enters the key and it turns out to be wrong, he or she will be redirected back to the registration page and asked to enter the correct key or don't enter a key at all.
 <img src="https://github.com/aritrasinha108/IRIS_191EC108_MEAN-STACK/blob/master/screenshots/auth/login.png" width="800" height="500">
+
 #### Once the validation is complete, he or she will be redirected to the login page, to sign in to the account. After entering the correct credentials, the user will be taken to the homepage of the website according to his postion (admin or a student).
 
 ## 2. Admin Page
